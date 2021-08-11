@@ -25,7 +25,7 @@ Average Reward is the Arithmetic Mean of all rewards obtained from the algorithm
 
 ### Sources
 
-ES Medium Blog Post:[https://medium.com/embersword/the-vision-of-ember-sword-the-land-sale-1998be5e3fe5](https://medium.com/embersword/the-vision-of-ember-sword-the-land-sale-1998be5e3fe5)
+ES Medium Blog Post: https://medium.com/embersword/the-vision-of-ember-sword-the-land-sale-1998be5e3fe5
  
 ES Website Map JSON: https://embersword.com/map/solarwood.json
  
