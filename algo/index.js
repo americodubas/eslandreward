@@ -4,7 +4,7 @@ const averages = require("./averages.json");
 
 const fs = require("fs");
 //----------------------
-const areaSize = 10;
+const areaSize = 9;
 //main();
 averagesGen();
 //----------------------
@@ -89,7 +89,7 @@ async function averagesGen() {
   }
 
   let data = JSON.stringify(fileparsed);
-  fs.writeFileSync("average10.json", data);
+  fs.writeFileSync("average9.json", data);
   console.log("done");
 }
 

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Row, Layout, Button, Col, Typography, Tooltip } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./App.css";
-import average10 from "./assets/average10.json";
 
+//Map Source
+import average10 from "./assets/average10.json";
+import average9 from "./assets/average9.json";
+
+//Images
 import RPImage from "./assets/regular_plots.png";
 import SettlementImage from "./assets/settlement_plot.png";
 import TownImage from "./assets/town_plot.png";
@@ -14,27 +18,32 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
 function App() {
   const { Content } = Layout;
+
   const [map, setMap] = useState([]);
   const [info, setInfo] = useState({
     loading: false,
     data: undefined,
     top100: null,
+    areaType: 21,
   });
 
   useEffect(() => {
     generateMap();
     //eslint-disable-next-line
-  }, [info.top100]);
+  }, [info.top100, info.areaType]);
 
-  function generateMap() {
+  const generateMap = () => {
     let data = [...average10];
+    if (info.areaType === 19) {
+      data = [...average9];
+    }
     const columns = [...Array(200).keys()].reverse().map((m) => {
       return data.filter((f) => f.coordinates.y === m).sort((a, b) => a.coordinates.x - b.coordinates.x);
     });
     setTimeout(() => {
       setMap(columns);
     }, 100);
-  }
+  };
 
   return (
     <Layout className="layout body">
@@ -46,6 +55,30 @@ function App() {
           </span>
           <span>
             Solarwood <img src={SolarwoodImage} style={{ width: 45 }} alt="plot" />
+            &nbsp;&nbsp;
+            <Button
+              disabled={info.areaType === 21}
+              type="primary"
+              className={info.areaType === 21 ? "button selected" : "button"}
+              onClick={() => {
+                setMap([]);
+                setInfo({ ...info, data: undefined, top100: null, areaType: 21 });
+              }}
+            >
+              21x21
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              disabled={info.areaType === 19}
+              type="primary"
+              className={info.areaType === 19 ? "button selected" : "button"}
+              onClick={() => {
+                setMap([]);
+                setInfo({ ...info, data: undefined, top100: null, areaType: 19 });
+              }}
+            >
+              19x19
+            </Button>
           </span>
         </Row>
         <Row style={{ width: "100%" }}>
@@ -106,6 +139,7 @@ function App() {
                   <Tooltip placement="left" title="Top 500" color="#f01f5a">
                     <Button
                       disabled={map.length === 0}
+                      style={{ width: 200 }}
                       type="primary"
                       className={info.top100 === 0 ? "button selected" : "button"}
                       onClick={() => setInfo({ ...info, top100: 0 })}
@@ -117,6 +151,7 @@ function App() {
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
                   <Tooltip placement="left" title="Top 200" color="#f01f5a">
                     <Button
+                      style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 1 ? "button selected" : "button"}
@@ -129,6 +164,7 @@ function App() {
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
                   <Tooltip placement="left" title="Top 100" color="#f01f5a">
                     <Button
+                      style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 2 ? "button selected" : "button"}
@@ -141,6 +177,7 @@ function App() {
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
                   <Tooltip placement="left" title="Top 100" color="#f01f5a">
                     <Button
+                      style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 3 ? "button selected" : "button"}
@@ -152,7 +189,12 @@ function App() {
                 </Row>
                 {info.top100 !== null ? (
                   <Row style={{ width: "100%", marginTop: 20 }} justify="center">
-                    <Button type="primary" className="button" onClick={() => setInfo({ ...info, top100: null })}>
+                    <Button
+                      style={{ width: 200 }}
+                      type="primary"
+                      className="button"
+                      onClick={() => setInfo({ ...info, top100: null })}
+                    >
                       Reset Filters
                     </Button>
                   </Row>
@@ -274,8 +316,8 @@ function App() {
           <Row className="row100 text">ES Discord User: mrcustodio</Row>
           <Row className="row100 text">
             Source Code (Algo + React Website): &nbsp;
-            <Typography.Link href="https://embersword.com/map/solarwood.json" target="_blank">
-              https://embersword.com/map/solarwood.json
+            <Typography.Link href="https://github.com/mrcustodio/eslandreward" target="_blank">
+              https://github.com/mrcustodio/eslandreward
             </Typography.Link>
           </Row>
         </Row>
