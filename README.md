@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# Ember Sword - Local Land Reward Scale
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Calculation Breakdown
 
-In the project directory, you can run:
+Using the information provided by ES from the sources below, I wrote a simple algorithm that iterates
+through each plot and calculates using the "20x20" area how each plot affects the rewards of the plots
+within the local area based on the multipliers of each plot type.
 
-### `yarn start`
+After that, I recreated the map to allow filter by the average rewards scale based on plot types (Regular,
+Settlement, Town, City).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+For calculation purposes, I have assumed that the Capital multiplier is the same as the City multiplier
+(125) since this information is not available. Also, the "20x20" is a grey area because there is no way to
+have a square taking individual plots only into consideration. So on the top, you have two options, 21x21 or
+19x19 area.
+          
+Minimum Reward is the minimum that a plot will receive if one of the local plots sells something.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Maximum Reward is the maximum that a plot will receive if one of the local plots sells something.
 
-### `yarn test`
+Average Reward is the Arithmetic Mean of all rewards obtained from the algorithm calculations.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+### Sources
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ES Medium Blog Post:[https://medium.com/embersword/the-vision-of-ember-sword-the-land-sale-1998be5e3fe5](https://medium.com/embersword/the-vision-of-ember-sword-the-land-sale-1998be5e3fe5)
+ 
+ES Website Map JSON: https://embersword.com/map/solarwood.json
+ 
