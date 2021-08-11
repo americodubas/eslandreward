@@ -1,22 +1,9 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body,
+html {
+  background-color: #0c161c;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -24,8 +11,120 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.body {
+  min-width: 100vw;
+  background-color: #0c161c;
+  display: flex;
+  flex-direction: column;
+}
+
+.map {
+  width: 1020px;
+  height: 1020px;
+  border-width: 2px;
+  border-color: #020a0f;
+  background-color: #020a0f;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.loading {
+  width: 1000px;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.col {
+  width: 5px;
+  height: 5px;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.col:hover {
+  border-color: #d3f261;
+  background-color: #d3f261;
+}
+
+.rp {
+  background-color: #0c161c;
+}
+
+.settlements {
+  background-color: #57bce0;
+}
+
+.town {
+  background-color: #9853de;
+}
+
+.city {
+  background-color: #f01f5a;
+}
+
+.capital {
+  background-color: #f27a1a;
+}
+
+.selected {
+  background-color: #ffec3d;
+}
+
+.top {
+  background-color: #ffec3d;
+}
+
+.row100 {
+  width: 100%;
+  color: white;
+}
+
+.row100.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.row100.text {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.button.ant-btn-primary {
+  background-color: #399fab;
+  border-color: #399fab;
+  width: 200px;
+  color: #fff;
+}
+
+.button.ant-btn-primary:hover {
+  background-color: #f01f5a;
+  border-color: #f01f5a;
+}
+
+.button.ant-btn-primary.selected {
+  background-color: #ffec3d;
+  border-color: #ffec3d;
+  color: #0c161c;
+}
+
+.box {
+  border-style: solid;
+  border-width: 30px;
+  border-image-source: url("assets/bg_border.svg");
+  border-image-slice: 100;
+  border-image-repeat: stretch;
 }
 
 @keyframes App-logo-spin {
