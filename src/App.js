@@ -83,7 +83,7 @@ function App() {
           </span>
         </Row>
         <Row style={{ width: "100%" }}>
-          <Col style={{ width: 1020 }}>
+          <Col xs={24} xl={18}>
             {map.length === 0 ? (
               <Row className="loading">
                 <LoadingOutlined style={{ color: "white", fontSize: "3rem" }} />
@@ -130,7 +130,7 @@ function App() {
               </div>
             )}
           </Col>
-          <Col style={{ width: "calc(100% - 1020px)" }}>
+          <Col style={{ backgroundColor: "#0c161c" }} xs={24} xl={6}>
             <Row style={{ width: "100%" }}>
               <Row style={{ paddingLeft: 50, marginTop: 10, width: "100%" }}>
                 <Row className="row100 title" justify="center" align="middle">
