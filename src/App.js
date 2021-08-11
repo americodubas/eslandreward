@@ -40,6 +40,7 @@ function App() {
     const columns = [...Array(200).keys()].reverse().map((m) => {
       return data.filter((f) => f.coordinates.y === m).sort((a, b) => a.coordinates.x - b.coordinates.x);
     });
+
     setTimeout(() => {
       setMap(columns);
     }, 100);
@@ -136,7 +137,7 @@ function App() {
                   Top Reward Filter
                 </Row>
                 <Row style={{ width: "100%", marginBottom: 10, marginTop: 10 }} justify="center">
-                  <Tooltip placement="left" title="Top 500" color="#f01f5a">
+                  <Tooltip placement="left" title="Top 2000" color="#f01f5a">
                     <Button
                       disabled={map.length === 0}
                       style={{ width: 200 }}
@@ -149,7 +150,7 @@ function App() {
                   </Tooltip>
                 </Row>
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
-                  <Tooltip placement="left" title="Top 200" color="#f01f5a">
+                  <Tooltip placement="left" title="Top 300" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
@@ -162,7 +163,7 @@ function App() {
                   </Tooltip>
                 </Row>
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
-                  <Tooltip placement="left" title="Top 100" color="#f01f5a">
+                  <Tooltip placement="left" title="Top 120" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
@@ -175,7 +176,7 @@ function App() {
                   </Tooltip>
                 </Row>
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
-                  <Tooltip placement="left" title="Top 100" color="#f01f5a">
+                  <Tooltip placement="left" title="Top 120" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
