@@ -1,7 +1,5 @@
 # Ember Sword - Local Land Reward Scale
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Calculation Breakdown
 
 Using the information provided by ES from the sources below, I wrote a simple algorithm that iterates
