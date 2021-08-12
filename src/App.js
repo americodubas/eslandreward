@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Layout, Button, Col, Typography, Tooltip } from "antd";
+import { Row, Layout, Button, Col, Typography, Tooltip, Space, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./App.css";
 
@@ -16,6 +16,10 @@ import CapitalImage from "./assets/capital_plot.png";
 import ESLogo from "./assets/logo@2x.png";
 import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
+const { Search } = Input;
+
+const emptyCoordiante = { x: "", y: "" };
+
 function App() {
   const { Content } = Layout;
 
@@ -26,6 +30,7 @@ function App() {
     top100: null,
     areaType: 21,
   });
+  const [selectedCoordinates, setSelectedCoordinates] = useState(emptyCoordiante)
 
   useEffect(() => {
     generateMap();
@@ -45,6 +50,32 @@ function App() {
       setMap(columns);
     }, 100);
   };
+
+  const selectXCoordinate = (event) => {
+    clearSelectedCoordinate()
+    const newCoordinate = { ...selectedCoordinates, x: event.target.value }
+    setSelectedCoordinates(newCoordinate)
+  }
+
+  const selectYCoordinate = (event) => {
+    clearSelectedCoordinate()
+    const newCoordinate = { ...selectedCoordinates, y: event.target.value }
+    setSelectedCoordinates(newCoordinate)
+  }
+
+  const clearSelectedCoordinate = () => {
+    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`)
+    for (let element of elements) {
+      element.classList.remove("selected")
+    }
+  }
+
+  const searchCoordinate = () => {
+    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`)
+    for (let element of elements) {
+      element.click()
+    }
+  }
 
   return (
     <Layout className="layout body">
@@ -82,6 +113,12 @@ function App() {
             </Button>
           </span>
         </Row>
+        <Row className="title" style={{ width: "100%", marginBottom: 20 }}>
+          <Space direction="horizontal">
+            <Input placeholder="X-coordinate" min="0" max="199" type="number" style={{ width: 200 }} onChange={selectXCoordinate} />
+            <Search placeholder="Y-coordinate" min="0" max="199" type="number" allowClear style={{ width: 200 }} enterButton onChange={selectYCoordinate} onSearch={searchCoordinate} />
+          </Space>
+        </Row>
         <Row style={{ width: "100%" }}>
           <Col xs={24} xl={18}>
             {map.length === 0 ? (
@@ -109,18 +146,18 @@ function App() {
                             (info.data && info.data.index === col.index
                               ? " col selected"
                               : col.isTop100 && col.type === info.top100
-                              ? " col top"
-                              : col.type === 0
-                              ? " col rp"
-                              : col.type === 1
-                              ? " col settlements"
-                              : col.type === 2
-                              ? " col town"
-                              : col.type === 3
-                              ? " col city"
-                              : col.type === 4
-                              ? " col capital"
-                              : "")
+                                ? " col top"
+                                : col.type === 0
+                                  ? " col rp"
+                                  : col.type === 1
+                                    ? " col settlements"
+                                    : col.type === 2
+                                      ? " col town"
+                                      : col.type === 3
+                                        ? " col city"
+                                        : col.type === 4
+                                          ? " col capital"
+                                          : "")
                           }
                         ></div>
                       ))}
@@ -223,12 +260,12 @@ function App() {
                       {info.data.type === 0
                         ? "Regular Plot"
                         : info.data.type === 1
-                        ? "Settlement Plot"
-                        : info.data.type === 2
-                        ? "Town Plot"
-                        : info.data.type === 3
-                        ? "City Plot"
-                        : "Capital Plot"}
+                          ? "Settlement Plot"
+                          : info.data.type === 2
+                            ? "Town Plot"
+                            : info.data.type === 3
+                              ? "City Plot"
+                              : "Capital Plot"}
                     </Row>
                     <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
                       Coordinates
