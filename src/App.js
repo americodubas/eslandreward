@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Layout, Button, Col, Typography, Tooltip } from "antd";
+import { Row, Layout, Button, Col, Typography, Tooltip, Space, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./App.css";
 
@@ -16,9 +16,55 @@ import CapitalImage from "./assets/capital_plot.png";
 import ESLogo from "./assets/logo@2x.png";
 import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
+const emptyCoordiante = { x: "", y: "" };
+
+const MapComponent = React.memo(function Index({ array, info, setInfo }) {
+  console.log("map");
+  return (
+    <div className="map">
+      {array.map((row, i) => {
+        return (
+          <div className="row" key={i}>
+            {row.map((col, ii) => (
+              <div
+                key={i + "-" + ii}
+                onClick={() => {
+                  setInfo({ ...info, loading: true });
+                  setTimeout(() => {
+                    setInfo({ ...info, data: col, loading: false, top100: null });
+                  }, 600);
+                }}
+                className={
+                  col.coordinates.x +
+                  "-" +
+                  col.coordinates.y +
+                  (info.data && info.data.index === col.index
+                    ? " col selected"
+                    : col.isTop100 && col.type === info.top100
+                    ? " col top"
+                    : col.type === 0
+                    ? " col rp"
+                    : col.type === 1
+                    ? " col settlements"
+                    : col.type === 2
+                    ? " col town"
+                    : col.type === 3
+                    ? " col city"
+                    : col.type === 4
+                    ? " col capital"
+                    : "")
+                }
+              ></div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+});
+
 function App() {
   const { Content } = Layout;
-
   const [map, setMap] = useState([]);
   const [info, setInfo] = useState({
     loading: false,
@@ -26,24 +72,58 @@ function App() {
     top100: null,
     areaType: 21,
   });
+  const [selectedCoordinates, setSelectedCoordinates] = useState(emptyCoordiante);
 
   useEffect(() => {
     generateMap();
     //eslint-disable-next-line
   }, [info.top100, info.areaType]);
 
+  useEffect(() => {
+    setSelectedCoordinates(emptyCoordiante);
+    //eslint-disable-next-line
+  }, [info.data]);
+
   const generateMap = () => {
     let data = [...average10];
     if (info.areaType === 19) {
       data = [...average9];
     }
+
     const columns = [...Array(200).keys()].reverse().map((m) => {
       return data.filter((f) => f.coordinates.y === m).sort((a, b) => a.coordinates.x - b.coordinates.x);
     });
 
     setTimeout(() => {
       setMap(columns);
+      setSelectedCoordinates(emptyCoordiante);
     }, 100);
+  };
+
+  const selectXCoordinate = (event) => {
+    clearSelectedCoordinate();
+    const newCoordinate = { ...selectedCoordinates, x: event.target.value };
+    setSelectedCoordinates(newCoordinate);
+  };
+
+  const selectYCoordinate = (event) => {
+    clearSelectedCoordinate();
+    const newCoordinate = { ...selectedCoordinates, y: event.target.value };
+    setSelectedCoordinates(newCoordinate);
+  };
+
+  const clearSelectedCoordinate = () => {
+    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`);
+    for (let element of elements) {
+      element.classList.remove("selected");
+    }
+  };
+
+  const searchCoordinate = () => {
+    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`);
+    for (let element of elements) {
+      element.click();
+    }
   };
 
   return (
@@ -82,57 +162,48 @@ function App() {
             </Button>
           </span>
         </Row>
+
         <Row style={{ width: "100%" }}>
-          <Col xs={24} xl={18}>
+          <Col className="colLeft">
             {map.length === 0 ? (
               <Row className="loading">
                 <LoadingOutlined style={{ color: "white", fontSize: "3rem" }} />
               </Row>
             ) : (
-              <div className="map">
-                {map.map((row, i) => {
-                  return (
-                    <div className="row" key={i}>
-                      {row.map((col, ii) => (
-                        <div
-                          key={i + "-" + ii}
-                          onClick={() => {
-                            setInfo({ ...info, loading: true });
-                            setTimeout(() => {
-                              setInfo({ ...info, data: col, loading: false });
-                            }, 600);
-                          }}
-                          className={
-                            col.coordinates.x +
-                            "-" +
-                            col.coordinates.y +
-                            (info.data && info.data.index === col.index
-                              ? " col selected"
-                              : col.isTop100 && col.type === info.top100
-                              ? " col top"
-                              : col.type === 0
-                              ? " col rp"
-                              : col.type === 1
-                              ? " col settlements"
-                              : col.type === 2
-                              ? " col town"
-                              : col.type === 3
-                              ? " col city"
-                              : col.type === 4
-                              ? " col capital"
-                              : "")
-                          }
-                        ></div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
+              <MapComponent array={map} info={info} setInfo={setInfo} />
             )}
           </Col>
-          <Col style={{ backgroundColor: "#0c161c" }} xs={24} xl={6}>
+
+          <Col className="colRight">
             <Row style={{ width: "100%" }}>
-              <Row style={{ paddingLeft: 50, marginTop: 10, width: "100%" }}>
+              <Row style={{ marginTop: 0, width: "100%" }}>
+                <Row style={{ width: "100%", marginTop: 10, marginBottom: 20 }} justify="center">
+                  <Space direction="horizontal">
+                    <Input
+                      value={selectedCoordinates.x}
+                      placeholder="X"
+                      min="0"
+                      max="199"
+                      type="number"
+                      style={{ width: 80 }}
+                      onPressEnter={searchCoordinate}
+                      onChange={selectXCoordinate}
+                    />
+                    <Input
+                      value={selectedCoordinates.y}
+                      placeholder="Y"
+                      min="0"
+                      max="199"
+                      type="number"
+                      style={{ width: 80 }}
+                      onPressEnter={searchCoordinate}
+                      onChange={selectYCoordinate}
+                    />
+                    <Button style={{ width: 80 }} type="primary" className="button" onClick={searchCoordinate}>
+                      Search
+                    </Button>
+                  </Space>
+                </Row>
                 <Row className="row100 title" justify="center" align="middle">
                   Top Reward Filter
                 </Row>
@@ -143,7 +214,9 @@ function App() {
                       style={{ width: 200 }}
                       type="primary"
                       className={info.top100 === 0 ? "button selected" : "button"}
-                      onClick={() => setInfo({ ...info, top100: 0 })}
+                      onClick={() => {
+                        setInfo({ ...info, data: undefined, top100: 0 });
+                      }}
                     >
                       Regular Plot
                     </Button>
@@ -156,7 +229,9 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 1 ? "button selected" : "button"}
-                      onClick={() => setInfo({ ...info, top100: 1 })}
+                      onClick={() => {
+                        setInfo({ ...info, data: undefined, top100: 1 });
+                      }}
                     >
                       Settlement
                     </Button>
@@ -169,7 +244,9 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 2 ? "button selected" : "button"}
-                      onClick={() => setInfo({ ...info, top100: 2 })}
+                      onClick={() => {
+                        setInfo({ ...info, data: undefined, top100: 2 });
+                      }}
                     >
                       Town
                     </Button>
@@ -182,7 +259,9 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 3 ? "button selected" : "button"}
-                      onClick={() => setInfo({ ...info, top100: 3 })}
+                      onClick={() => {
+                        setInfo({ ...info, data: undefined, top100: 3 });
+                      }}
                     >
                       City
                     </Button>
@@ -201,12 +280,11 @@ function App() {
                   </Row>
                 ) : null}
               </Row>
-              <Row style={{ width: "100%", marginTop: 50, paddingLeft: 50 }} justify="center">
+              <Row style={{ width: "100%", marginTop: 40 }} justify="center">
                 {info.loading ? (
                   <LoadingOutlined style={{ color: "white", fontSize: "3rem" }} />
                 ) : info.data !== undefined ? (
                   <Row className="box">
-                    <Row className="row100">{console.log(info)}</Row>
                     <Row className="row100 title" justify="center" align="middle">
                       {info.data.type === 0 ? (
                         <img src={RPImage} style={{ width: 30 }} alt="plot" />
