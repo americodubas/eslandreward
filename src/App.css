@@ -3,6 +3,10 @@ html {
   background-color: #0c161c;
 }
 
+.content {
+  padding: 0 50px;
+}
+
 .App-header {
   flex-direction: column;
   align-items: center;
@@ -20,7 +24,7 @@ html {
 
 .map {
   width: 1010px;
-  height: 1020px;
+  height: 1013px;
   background-color: #000;
   border-radius: 10px;
   padding: 7px;
@@ -132,6 +136,26 @@ html {
   border-image-repeat: stretch;
 }
 
+.localArea19 {
+  position: absolute;
+  width: 95px;
+  height: 95px;
+  margin-left: -45px;
+  margin-top: -45px;
+  background-color: rgb(255, 255, 255, 0.2);
+  z-index: 2;
+}
+
+.localArea21 {
+  position: absolute;
+  width: 105px;
+  height: 105px;
+  margin-left: -50px;
+  margin-top: -50px;
+  background-color: rgb(255, 255, 255, 0.2);
+  z-index: 2;
+}
+
 @media only screen and (max-width: 1280px) {
   .colLeft {
     width: 100%;
@@ -142,5 +166,17 @@ html {
     width: 100%;
     margin-top: 20px;
     padding-left: 0px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .titleMobile {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .titleMobile {
+    font-size: 0.8rem;
   }
 }

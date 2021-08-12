@@ -19,6 +19,7 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 const emptyCoordiante = { x: "", y: "" };
 
 const MapComponent = React.memo(function Index({ array, info, setInfo }) {
+  const element = <div className={info.areaType === 21 ? "localArea21" : "localArea19"} />;
   return (
     <div className="map">
       {array.map((row, i) => {
@@ -53,7 +54,9 @@ const MapComponent = React.memo(function Index({ array, info, setInfo }) {
                     ? " col capital"
                     : "")
                 }
-              ></div>
+              >
+                {info.data && info.data.index === col.index ? element : null}
+              </div>
             ))}
           </div>
         );
