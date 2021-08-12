@@ -19,7 +19,6 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 const emptyCoordiante = { x: "", y: "" };
 
 const MapComponent = React.memo(function Index({ array, info, setInfo }) {
-  console.log("map");
   return (
     <div className="map">
       {array.map((row, i) => {
