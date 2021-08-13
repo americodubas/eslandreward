@@ -18,8 +18,7 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
 const emptyCoordiante = { x: "", y: "" };
 
-const MapComponent = React.memo(function Index({ array, info, setInfo }) {
-  const element = <div className={info.areaType === 21 ? "localArea21" : "localArea19"} />;
+const MapComponent = React.memo(function Index({ array, updateSelected, cleanSelected }) {
   return (
     <div className="map">
       {array.map((row, i) => {
@@ -29,20 +28,24 @@ const MapComponent = React.memo(function Index({ array, info, setInfo }) {
               <div
                 key={i + "-" + ii}
                 onClick={() => {
-                  setInfo({ ...info, loading: true });
+                  cleanSelected();
+                  updateSelected({ loading: true });
                   setTimeout(() => {
-                    setInfo({ ...info, data: col, loading: false, top100: null });
-                  }, 600);
+                    const element = document.getElementById(`${col.index}`);
+                    element.classList.add("selected");
+                    for (let el of col.localArea.filter((f) => f !== col.index)) {
+                      const element = document.getElementById(`${el}`);
+                      if (element.classList[2] === "rp") {
+                        element.classList.add("local");
+                      }
+                    }
+                    updateSelected({ data: col, loading: false });
+                  }, 200);
                 }}
+                id={col.index}
                 className={
-                  col.coordinates.x +
-                  "-" +
-                  col.coordinates.y +
-                  (info.data && info.data.index === col.index
-                    ? " col selected"
-                    : col.isTop100 && col.type === info.top100
-                    ? " col top"
-                    : col.type === 0
+                  `${col.coordinates.x}-${col.coordinates.y}` +
+                  (col.type === 0
                     ? " col rp"
                     : col.type === 1
                     ? " col settlements"
@@ -54,9 +57,7 @@ const MapComponent = React.memo(function Index({ array, info, setInfo }) {
                     ? " col capital"
                     : "")
                 }
-              >
-                {info.data && info.data.index === col.index ? element : null}
-              </div>
+              />
             ))}
           </div>
         );
@@ -115,9 +116,13 @@ function App() {
   };
 
   const clearSelectedCoordinate = () => {
-    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`);
-    for (let element of elements) {
+    if (info.data) {
+      const element = document.getElementById(`${info.data.index}`);
       element.classList.remove("selected");
+      for (let el of info.data.localArea) {
+        const element = document.getElementById(`${el}`);
+        element.classList.remove("local");
+      }
     }
   };
 
@@ -126,6 +131,22 @@ function App() {
     for (let element of elements) {
       element.click();
     }
+  };
+
+  const showTop100 = (type) => {
+    let data = [...average10];
+    if (info.areaType === 19) {
+      data = [...average9];
+    }
+    for (let el of data.filter((f) => f.type === info.top100 && f.isTop100 === true)) {
+      const element = document.getElementById(`${el.index}`);
+      element.classList.remove("top");
+    }
+    for (let el of data.filter((f) => f.type === type && f.isTop100 === true)) {
+      const element = document.getElementById(`${el.index}`);
+      element.classList.add("top");
+    }
+    setInfo({ ...info, top100: type });
   };
 
   return (
@@ -144,6 +165,7 @@ function App() {
               type="primary"
               className={info.areaType === 21 ? "button selected" : "button"}
               onClick={() => {
+                clearSelectedCoordinate();
                 setMap([]);
                 setInfo({ ...info, data: undefined, top100: null, areaType: 21 });
               }}
@@ -156,6 +178,7 @@ function App() {
               type="primary"
               className={info.areaType === 19 ? "button selected" : "button"}
               onClick={() => {
+                clearSelectedCoordinate();
                 setMap([]);
                 setInfo({ ...info, data: undefined, top100: null, areaType: 19 });
               }}
@@ -172,7 +195,13 @@ function App() {
                 <LoadingOutlined style={{ color: "white", fontSize: "3rem" }} />
               </Row>
             ) : (
-              <MapComponent array={map} info={info} setInfo={setInfo} />
+              <MapComponent
+                cleanSelected={clearSelectedCoordinate}
+                array={map}
+                updateSelected={(e) => {
+                  setInfo({ ...info, ...e });
+                }}
+              />
             )}
           </Col>
 
@@ -216,9 +245,7 @@ function App() {
                       style={{ width: 200 }}
                       type="primary"
                       className={info.top100 === 0 ? "button selected" : "button"}
-                      onClick={() => {
-                        setInfo({ ...info, data: undefined, top100: 0 });
-                      }}
+                      onClick={() => showTop100(0)}
                     >
                       Regular Plot
                     </Button>
@@ -231,9 +258,7 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 1 ? "button selected" : "button"}
-                      onClick={() => {
-                        setInfo({ ...info, data: undefined, top100: 1 });
-                      }}
+                      onClick={() => showTop100(1)}
                     >
                       Settlement
                     </Button>
@@ -246,9 +271,7 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 2 ? "button selected" : "button"}
-                      onClick={() => {
-                        setInfo({ ...info, data: undefined, top100: 2 });
-                      }}
+                      onClick={() => showTop100(2)}
                     >
                       Town
                     </Button>
@@ -261,9 +284,7 @@ function App() {
                       disabled={map.length === 0}
                       type="primary"
                       className={info.top100 === 3 ? "button selected" : "button"}
-                      onClick={() => {
-                        setInfo({ ...info, data: undefined, top100: 3 });
-                      }}
+                      onClick={() => showTop100(3)}
                     >
                       City
                     </Button>
@@ -271,12 +292,7 @@ function App() {
                 </Row>
                 {info.top100 !== null ? (
                   <Row style={{ width: "100%", marginTop: 20 }} justify="center">
-                    <Button
-                      style={{ width: 200 }}
-                      type="primary"
-                      className="button"
-                      onClick={() => setInfo({ ...info, top100: null })}
-                    >
+                    <Button style={{ width: 200 }} type="primary" className="button" onClick={() => showTop100(null)}>
                       Reset Filters
                     </Button>
                   </Row>
