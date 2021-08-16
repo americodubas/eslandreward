@@ -3,7 +3,7 @@ const parsed = require("./parsed.json");
 
 const fs = require("fs");
 //----------------------
-const areaSize = 10;
+const areaSize = 9;
 //main();
 averagesGen();
 //----------------------
@@ -21,7 +21,7 @@ async function averagesGen() {
         f.coordinates.y >= limits.bottom &&
         f.coordinates.y <= limits.top
     );
-    fileparsed[i].localArea = [...localArea.map((m) => m.index)];
+    fileparsed[i].limits = limits;
 
     if (curr.type === 2 || curr.type === 3 || curr.type === 4) {
       const type0 = localArea.filter((f) => f.type === 0);
@@ -76,6 +76,7 @@ async function averagesGen() {
     fileparsed[i].isTop100 = false;
     delete fileparsed[i].price;
     delete fileparsed[i].rewards;
+    delete fileparsed[i].size;
   }
 
   const newFile = [...fileparsed];

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Layout, Button, Col, Typography, Tooltip, Space, Input } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import "./App.css";
-
-//Map Source
 import average10 from "./assets/average10.json";
 import average9 from "./assets/average9.json";
 
@@ -18,7 +16,7 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
 const emptyCoordiante = { x: "", y: "" };
 
-const MapComponent = React.memo(function Index({ array, updateSelected, cleanSelected }) {
+const MapComponent = React.memo(function Index({ array, updateSelected, cleanSelected, localArea }) {
   return (
     <div className="map">
       {array.map((row, i) => {
@@ -33,12 +31,13 @@ const MapComponent = React.memo(function Index({ array, updateSelected, cleanSel
                   setTimeout(() => {
                     const element = document.getElementById(`${col.index}`);
                     element.classList.add("selected");
-                    for (let el of col.localArea.filter((f) => f !== col.index)) {
-                      const element = document.getElementById(`${el}`);
+                    for (let el of localArea(col.limits).filter((f) => f.index !== col.index)) {
+                      const element = document.getElementById(`${el.index}`);
                       if (element.classList[2] === "rp") {
                         element.classList.add("local");
                       }
                     }
+
                     updateSelected({ data: col, loading: false });
                   }, 200);
                 }}
@@ -92,7 +91,6 @@ function App() {
     if (info.areaType === 19) {
       data = [...average9];
     }
-
     const columns = [...Array(200).keys()].reverse().map((m) => {
       return data.filter((f) => f.coordinates.y === m).sort((a, b) => a.coordinates.x - b.coordinates.x);
     });
@@ -119,8 +117,8 @@ function App() {
     if (info.data) {
       const element = document.getElementById(`${info.data.index}`);
       element.classList.remove("selected");
-      for (let el of info.data.localArea) {
-        const element = document.getElementById(`${el}`);
+      for (let el of localArea(info.data.limits)) {
+        const element = document.getElementById(`${el.index}`);
         element.classList.remove("local");
       }
     }
@@ -131,6 +129,20 @@ function App() {
     for (let element of elements) {
       element.click();
     }
+  };
+
+  const localArea = (limits) => {
+    let data = [...average10];
+    if (info.areaType === 19) {
+      data = [...average9];
+    }
+    return data.filter(
+      (f) =>
+        f.coordinates.x >= limits.left &&
+        f.coordinates.x <= limits.right &&
+        f.coordinates.y >= limits.bottom &&
+        f.coordinates.y <= limits.top
+    );
   };
 
   const showTop100 = (type) => {
@@ -201,6 +213,7 @@ function App() {
                 updateSelected={(e) => {
                   setInfo({ ...info, ...e });
                 }}
+                localArea={localArea}
               />
             )}
           </Col>
