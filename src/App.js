@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Layout, Button, Col, Typography, Tooltip, Space, Input } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import "./App.css";
 import average10 from "./assets/average10.json";
 import average9 from "./assets/average9.json";
@@ -150,14 +150,32 @@ function App() {
     if (info.areaType === 19) {
       data = [...average9];
     }
+
+    //Clean
     for (let el of data.filter((f) => f.type === info.top100 && f.isTop100 === true)) {
       const element = document.getElementById(`${el.index}`);
       element.classList.remove("top");
     }
-    for (let el of data.filter((f) => f.type === type && f.isTop100 === true)) {
-      const element = document.getElementById(`${el.index}`);
-      element.classList.add("top");
+    if (info.top100 === -1) {
+      for (let el of data.filter((f) => f.type === 0 && f.averageReward > 0)) {
+        const element = document.getElementById(`${el.index}`);
+        element.classList.remove("top");
+      }
     }
+
+    //Paint
+    if (type === -1) {
+      for (let el of data.filter((f) => f.type === 0 && f.averageReward > 0)) {
+        const element = document.getElementById(`${el.index}`);
+        element.classList.add("top");
+      }
+    } else {
+      for (let el of data.filter((f) => f.type === type && f.isTop100 === true)) {
+        const element = document.getElementById(`${el.index}`);
+        element.classList.add("top");
+      }
+    }
+
     setInfo({ ...info, top100: type });
   };
 
@@ -263,6 +281,17 @@ function App() {
                       Regular Plot
                     </Button>
                   </Tooltip>
+                </Row>
+                <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
+                  <Button
+                    disabled={map.length === 0}
+                    style={{ width: 200 }}
+                    type="primary"
+                    className={info.top100 === -1 ? "button selected" : "button"}
+                    onClick={() => showTop100(-1)}
+                  >
+                    Regular Plot <RightOutlined /> Zero
+                  </Button>
                 </Row>
                 <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
                   <Tooltip placement="left" title="Top 300" color="#f01f5a">
