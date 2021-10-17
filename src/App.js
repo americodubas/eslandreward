@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Row, Layout, Button, Col, Typography, Tooltip, Space, Input } from "antd";
+import {
+  Row,
+  Layout,
+  Button,
+  Col,
+  Typography,
+  Tooltip,
+  Space,
+  Input,
+} from "antd";
 import { LoadingOutlined, RightOutlined } from "@ant-design/icons";
 import "./App.css";
 import average10 from "./assets/average10.json";
@@ -16,7 +25,12 @@ import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
 
 const emptyCoordiante = { x: "", y: "" };
 
-const MapComponent = React.memo(function Index({ array, updateSelected, cleanSelected, localArea }) {
+const MapComponent = React.memo(function Index({
+  array,
+  updateSelected,
+  cleanSelected,
+  localArea,
+}) {
   return (
     <div className="map">
       {array.map((row, i) => {
@@ -31,7 +45,9 @@ const MapComponent = React.memo(function Index({ array, updateSelected, cleanSel
                   setTimeout(() => {
                     const element = document.getElementById(`${col.index}`);
                     element.classList.add("selected");
-                    for (let el of localArea(col.limits).filter((f) => f.index !== col.index)) {
+                    for (let el of localArea(col.limits).filter(
+                      (f) => f.index !== col.index
+                    )) {
                       const element = document.getElementById(`${el.index}`);
                       if (element.classList[2] === "rp") {
                         element.classList.add("local");
@@ -74,7 +90,29 @@ function App() {
     top100: null,
     areaType: 21,
   });
-  const [selectedCoordinates, setSelectedCoordinates] = useState(emptyCoordiante);
+  const [selectedCoordinates, setSelectedCoordinates] =
+    useState(emptyCoordiante);
+
+  const dataGuild = [
+    { x: 0, y: 199, name: "poucatelha" },
+    { x: 0, y: 198, name: "poucatelha" },
+    { x: 0, y: 197, name: "poucatelha" },
+    { x: 0, y: 196, name: "poucatelha" },
+    { x: 0, y: 195, name: "poucatelha" },
+    { x: 0, y: 194, name: "poucatelha" },
+    { x: 1, y: 199, name: "poucatelha" },
+    { x: 1, y: 198, name: "poucatelha" },
+    { x: 1, y: 197, name: "poucatelha" },
+    { x: 1, y: 196, name: "poucatelha" },
+    { x: 1, y: 195, name: "poucatelha" },
+    { x: 1, y: 194, name: "poucatelha" },
+    { x: 2, y: 199, name: "poucatelha" },
+    { x: 2, y: 198, name: "poucatelha" },
+    { x: 2, y: 197, name: "poucatelha" },
+    { x: 2, y: 196, name: "poucatelha" },
+    { x: 2, y: 195, name: "poucatelha" },
+    { x: 2, y: 194, name: "poucatelha" },
+  ];
 
   useEffect(() => {
     generateMap();
@@ -92,7 +130,9 @@ function App() {
       data = [...average9];
     }
     const columns = [...Array(200).keys()].reverse().map((m) => {
-      return data.filter((f) => f.coordinates.y === m).sort((a, b) => a.coordinates.x - b.coordinates.x);
+      return data
+        .filter((f) => f.coordinates.y === m)
+        .sort((a, b) => a.coordinates.x - b.coordinates.x);
     });
 
     setTimeout(() => {
@@ -125,7 +165,9 @@ function App() {
   };
 
   const searchCoordinate = () => {
-    const elements = document.getElementsByClassName(`${selectedCoordinates.x}-${selectedCoordinates.y}`);
+    const elements = document.getElementsByClassName(
+      `${selectedCoordinates.x}-${selectedCoordinates.y}`
+    );
     for (let element of elements) {
       element.click();
     }
@@ -152,7 +194,9 @@ function App() {
     }
 
     //Clean
-    for (let el of data.filter((f) => f.type === info.top100 && f.isTop100 === true)) {
+    for (let el of data.filter(
+      (f) => f.type === info.top100 && f.isTop100 === true
+    )) {
       const element = document.getElementById(`${el.index}`);
       element.classList.remove("top");
     }
@@ -162,6 +206,10 @@ function App() {
         element.classList.remove("top");
       }
     }
+    for (let el of dataGuild) {
+      const element = document.getElementsByClassName(`${el.x}-${el.y}`);
+      element[0].classList.remove("top");
+    }
 
     //Paint
     if (type === -1) {
@@ -170,7 +218,9 @@ function App() {
         element.classList.add("top");
       }
     } else {
-      for (let el of data.filter((f) => f.type === type && f.isTop100 === true)) {
+      for (let el of data.filter(
+        (f) => f.type === type && f.isTop100 === true
+      )) {
         const element = document.getElementById(`${el.index}`);
         element.classList.add("top");
       }
@@ -179,16 +229,32 @@ function App() {
     setInfo({ ...info, top100: type });
   };
 
+  const setGuild = () => {
+    for (let el of dataGuild) {
+      const element = document.getElementsByClassName(`${el.x}-${el.y}`);
+      element[0].classList.add("top");
+    }
+
+    setInfo({ ...info, top100: 4 });
+  };
+
   return (
     <Layout className="layout body">
       <Content style={{ padding: "0 50px" }}>
-        <Row className="row100 title" style={{ marginBottom: 20 }} align="middle" justify="space-between">
+        <Row
+          className="row100 title"
+          style={{ marginBottom: 20 }}
+          align="middle"
+          justify="space-between"
+        >
           <span>
             <img src={ESLogo} style={{ width: 50 }} alt="plot" />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ember Sword - Local Land Reward Scale (2.5%)
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ember Sword - Local Land Reward
+            Scale (2.5%)
           </span>
           <span>
-            Solarwood <img src={SolarwoodImage} style={{ width: 45 }} alt="plot" />
+            Solarwood{" "}
+            <img src={SolarwoodImage} style={{ width: 45 }} alt="plot" />
             &nbsp;&nbsp;
             <Button
               disabled={info.areaType === 21}
@@ -197,7 +263,12 @@ function App() {
               onClick={() => {
                 clearSelectedCoordinate();
                 setMap([]);
-                setInfo({ ...info, data: undefined, top100: null, areaType: 21 });
+                setInfo({
+                  ...info,
+                  data: undefined,
+                  top100: null,
+                  areaType: 21,
+                });
               }}
             >
               21x21
@@ -210,7 +281,12 @@ function App() {
               onClick={() => {
                 clearSelectedCoordinate();
                 setMap([]);
-                setInfo({ ...info, data: undefined, top100: null, areaType: 19 });
+                setInfo({
+                  ...info,
+                  data: undefined,
+                  top100: null,
+                  areaType: 19,
+                });
               }}
             >
               19x19
@@ -239,7 +315,10 @@ function App() {
           <Col className="colRight">
             <Row style={{ width: "100%" }}>
               <Row style={{ marginTop: 0, width: "100%" }}>
-                <Row style={{ width: "100%", marginTop: 10, marginBottom: 20 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginTop: 10, marginBottom: 20 }}
+                  justify="center"
+                >
                   <Space direction="horizontal">
                     <Input
                       value={selectedCoordinates.x}
@@ -261,7 +340,12 @@ function App() {
                       onPressEnter={searchCoordinate}
                       onChange={selectYCoordinate}
                     />
-                    <Button style={{ width: 80 }} type="primary" className="button" onClick={searchCoordinate}>
+                    <Button
+                      style={{ width: 80 }}
+                      type="primary"
+                      className="button"
+                      onClick={searchCoordinate}
+                    >
                       Search
                     </Button>
                   </Space>
@@ -269,63 +353,106 @@ function App() {
                 <Row className="row100 title" justify="center" align="middle">
                   Top Reward Filter
                 </Row>
-                <Row style={{ width: "100%", marginBottom: 10, marginTop: 10 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
+                  justify="center"
+                >
+                  <Tooltip placement="left" title="Guild" color="#f01f5a">
+                    <Button
+                      disabled={map.length === 0}
+                      style={{ width: 200 }}
+                      type="primary"
+                      className={
+                        info.top100 === 4 ? "button selected" : "button"
+                      }
+                      onClick={() => setGuild()}
+                    >
+                      Guild
+                    </Button>
+                  </Tooltip>
+                </Row>
+                <Row
+                  style={{ width: "100%", marginBottom: 10 }}
+                  justify="center"
+                >
                   <Tooltip placement="left" title="Top 2000" color="#f01f5a">
                     <Button
                       disabled={map.length === 0}
                       style={{ width: 200 }}
                       type="primary"
-                      className={info.top100 === 0 ? "button selected" : "button"}
+                      className={
+                        info.top100 === 0 ? "button selected" : "button"
+                      }
                       onClick={() => showTop100(0)}
                     >
                       Regular Plot
                     </Button>
                   </Tooltip>
                 </Row>
-                <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginBottom: 10 }}
+                  justify="center"
+                >
                   <Button
                     disabled={map.length === 0}
                     style={{ width: 200 }}
                     type="primary"
-                    className={info.top100 === -1 ? "button selected" : "button"}
+                    className={
+                      info.top100 === -1 ? "button selected" : "button"
+                    }
                     onClick={() => showTop100(-1)}
                   >
                     Regular Plot <RightOutlined /> Zero
                   </Button>
                 </Row>
-                <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginBottom: 10 }}
+                  justify="center"
+                >
                   <Tooltip placement="left" title="Top 300" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
-                      className={info.top100 === 1 ? "button selected" : "button"}
+                      className={
+                        info.top100 === 1 ? "button selected" : "button"
+                      }
                       onClick={() => showTop100(1)}
                     >
                       Settlement
                     </Button>
                   </Tooltip>
                 </Row>
-                <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginBottom: 10 }}
+                  justify="center"
+                >
                   <Tooltip placement="left" title="Top 120" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
-                      className={info.top100 === 2 ? "button selected" : "button"}
+                      className={
+                        info.top100 === 2 ? "button selected" : "button"
+                      }
                       onClick={() => showTop100(2)}
                     >
                       Town
                     </Button>
                   </Tooltip>
                 </Row>
-                <Row style={{ width: "100%", marginBottom: 10 }} justify="center">
+                <Row
+                  style={{ width: "100%", marginBottom: 10 }}
+                  justify="center"
+                >
                   <Tooltip placement="left" title="Top 120" color="#f01f5a">
                     <Button
                       style={{ width: 200 }}
                       disabled={map.length === 0}
                       type="primary"
-                      className={info.top100 === 3 ? "button selected" : "button"}
+                      className={
+                        info.top100 === 3 ? "button selected" : "button"
+                      }
                       onClick={() => showTop100(3)}
                     >
                       City
@@ -333,8 +460,16 @@ function App() {
                   </Tooltip>
                 </Row>
                 {info.top100 !== null ? (
-                  <Row style={{ width: "100%", marginTop: 20 }} justify="center">
-                    <Button style={{ width: 200 }} type="primary" className="button" onClick={() => showTop100(null)}>
+                  <Row
+                    style={{ width: "100%", marginTop: 20 }}
+                    justify="center"
+                  >
+                    <Button
+                      style={{ width: 200 }}
+                      type="primary"
+                      className="button"
+                      onClick={() => showTop100(null)}
+                    >
                       Reset Filters
                     </Button>
                   </Row>
@@ -342,20 +477,34 @@ function App() {
               </Row>
               <Row style={{ width: "100%", marginTop: 40 }} justify="center">
                 {info.loading ? (
-                  <LoadingOutlined style={{ color: "white", fontSize: "3rem" }} />
+                  <LoadingOutlined
+                    style={{ color: "white", fontSize: "3rem" }}
+                  />
                 ) : info.data !== undefined ? (
                   <Row className="box">
-                    <Row className="row100 title" justify="center" align="middle">
+                    <Row
+                      className="row100 title"
+                      justify="center"
+                      align="middle"
+                    >
                       {info.data.type === 0 ? (
                         <img src={RPImage} style={{ width: 30 }} alt="plot" />
                       ) : info.data.type === 1 ? (
-                        <img src={SettlementImage} style={{ width: 30 }} alt="plot" />
+                        <img
+                          src={SettlementImage}
+                          style={{ width: 30 }}
+                          alt="plot"
+                        />
                       ) : info.data.type === 2 ? (
                         <img src={TownImage} style={{ width: 30 }} alt="plot" />
                       ) : info.data.type === 3 ? (
                         <img src={CityImage} style={{ width: 30 }} alt="plot" />
                       ) : (
-                        <img src={CapitalImage} style={{ width: 30 }} alt="plot" />
+                        <img
+                          src={CapitalImage}
+                          style={{ width: 30 }}
+                          alt="plot"
+                        />
                       )}
                       &nbsp;&nbsp;&nbsp;
                       {info.data.type === 0
@@ -368,31 +517,72 @@ function App() {
                         ? "City Plot"
                         : "Capital Plot"}
                     </Row>
-                    <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
+                    <Row
+                      className="row100 title"
+                      style={{ marginTop: 20 }}
+                      justify="center"
+                    >
                       Coordinates
                     </Row>
                     <Row className="row100" justify="center">
-                      X: {info.data.coordinates.x} &nbsp;Y: {info.data.coordinates.y}
+                      X: {info.data.coordinates.x} &nbsp;Y:{" "}
+                      {info.data.coordinates.y}
                     </Row>
-                    <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
+                    {dataGuild
+                      .filter(
+                        (f) =>
+                          f.x === info.data.coordinates.x &&
+                          f.y === info.data.coordinates.y
+                      )
+                      .map((f) => (
+                        <>
+                          <Row
+                            className="row100 title"
+                            style={{ marginTop: 20 }}
+                            justify="center"
+                          >
+                            Guild Member
+                          </Row>
+                          <Row className="row100" justify="center">
+                            {f.name}
+                          </Row>
+                        </>
+                      ))}
+                    <Row
+                      className="row100 title"
+                      style={{ marginTop: 20 }}
+                      justify="center"
+                    >
                       Top Local Reward
                     </Row>
                     <Row className="row100" justify="center">
                       {info.data.isTop100 ? "Yes" : "No"}
                     </Row>
-                    <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
+                    <Row
+                      className="row100 title"
+                      style={{ marginTop: 20 }}
+                      justify="center"
+                    >
                       Minimum Reward
                     </Row>
                     <Row className="row100" justify="center">
                       {info.data.minReward} %
                     </Row>
-                    <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
+                    <Row
+                      className="row100 title"
+                      style={{ marginTop: 20 }}
+                      justify="center"
+                    >
                       Maximum Reward
                     </Row>
                     <Row className="row100" justify="center">
                       {info.data.maxReward} %
                     </Row>
-                    <Row className="row100 title" style={{ marginTop: 20 }} justify="center">
+                    <Row
+                      className="row100 title"
+                      style={{ marginTop: 20 }}
+                      justify="center"
+                    >
                       Average Reward
                     </Row>
                     <Row className="row100" justify="center">
@@ -407,28 +597,35 @@ function App() {
         <Row style={{ width: "100%", marginTop: 100, marginBottom: 100 }}>
           <Row className="row100 title">Calculation Breakdown</Row>
           <Row className="row100 text">
-            Using the information provided by ES from the sources below, I wrote a simple algorithm that iterates
-            through each plot and calculates using the "20x20" area how each plot affects the rewards of the plots
-            within the local area based on the multipliers of each plot type.
+            Using the information provided by ES from the sources below, I wrote
+            a simple algorithm that iterates through each plot and calculates
+            using the "20x20" area how each plot affects the rewards of the
+            plots within the local area based on the multipliers of each plot
+            type.
           </Row>
           <Row className="row100 text">
-            After that, I recreated the map to allow filter by the average rewards scale based on plot types (Regular,
-            Settlement, Town, City).
+            After that, I recreated the map to allow filter by the average
+            rewards scale based on plot types (Regular, Settlement, Town, City).
           </Row>
           <Row className="row100 text">
-            For calculation purposes, I have assumed that the Capital multiplier is the same as the City multiplier
-            (125) since this information is not available. Also, the "20x20" is a grey area because there is no way to
-            have a square taking individual plots only into consideration. So on the top, you have two options, 21x21 or
-            19x19 area.
+            For calculation purposes, I have assumed that the Capital multiplier
+            is the same as the City multiplier (125) since this information is
+            not available. Also, the "20x20" is a grey area because there is no
+            way to have a square taking individual plots only into
+            consideration. So on the top, you have two options, 21x21 or 19x19
+            area.
           </Row>
           <Row className="row100 text">
-            Minimum Reward is the minimum that a plot will receive if one of the local plots sells something.
+            Minimum Reward is the minimum that a plot will receive if one of the
+            local plots sells something.
           </Row>
           <Row className="row100 text">
-            Maximum Reward is the maximum that a plot will receive if one of the local plots sells something.
+            Maximum Reward is the maximum that a plot will receive if one of the
+            local plots sells something.
           </Row>
           <Row className="row100 text">
-            Average Reward is the Arithmetic Mean of all rewards obtained from the algorithm calculations.
+            Average Reward is the Arithmetic Mean of all rewards obtained from
+            the algorithm calculations.
           </Row>
           <Row className="row100 text"></Row>
           <Row className="row100 title" style={{ marginTop: 20 }}>
@@ -445,7 +642,10 @@ function App() {
           </Row>
           <Row className="row100 text">
             ES Website Map JSON:&nbsp;
-            <Typography.Link href="https://embersword.com/map/solarwood.json" target="_blank">
+            <Typography.Link
+              href="https://embersword.com/map/solarwood.json"
+              target="_blank"
+            >
               https://embersword.com/map/solarwood.json
             </Typography.Link>
           </Row>
@@ -455,7 +655,10 @@ function App() {
           <Row className="row100 text">ES Discord User: mrcustodio</Row>
           <Row className="row100 text">
             Source Code (Algo + React Website): &nbsp;
-            <Typography.Link href="https://github.com/mrcustodio/eslandreward" target="_blank">
+            <Typography.Link
+              href="https://github.com/mrcustodio/eslandreward"
+              target="_blank"
+            >
               https://github.com/mrcustodio/eslandreward
             </Typography.Link>
           </Row>
