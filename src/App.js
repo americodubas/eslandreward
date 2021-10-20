@@ -49,7 +49,7 @@ const MapComponent = React.memo(function Index({
                       (f) => f.index !== col.index
                     )) {
                       const element = document.getElementById(`${el.index}`);
-                      if (element.classList[2] === "rp") {
+                      if (element.classList[2] === "rp" && !element.classList.contains("guild")) {
                         element.classList.add("local");
                       }
                     }
@@ -98,6 +98,8 @@ function App() {
     { x: 23, y: 38, name: "FikaFlau" },
     { x: 26, y: 28, name: "Cacho" },
     { x: 29, y: 38, name: "Gabriel Paganini" },
+    { x: 31, y: 37, name: "!Luvit" },
+    { x: 44, y: 151, name: "Michael Braga" },
     { x: 48, y: 131, name: "gugakai" },
     { x: 52, y: 48, name: "Gaspar" },
     { x: 65, y: 182, name: "GUGAWARRIORS" },
@@ -106,11 +108,14 @@ function App() {
     { x: 67, y: 106, name: "Unstoppablo" },
     { x: 72, y: 22, name: "Kaizen" },
     { x: 73, y: 52, name: "Matheussao" },
+    { x: 73, y: 151, name: "Nephalem" },
     { x: 76, y: 35, name: "Bazin" },
     { x: 86, y: 159, name: "LuigiGF" },
+    { x: 87, y: 174, name: "IrmãoCaneca" },
     { x: 91, y: 21, name: "Diego" },
     { x: 93, y: 29, name: "gugakai" },
     { x: 93, y: 38, name: "MkO" },
+    { x: 95, y: 171, name: "orok" },
     { x: 96, y: 55, name: "Nonakax" },
     { x: 96, y: 145, name: "Carvox" },
     { x: 99, y: 99, name: "sil" },
@@ -118,7 +123,8 @@ function App() {
     { x: 103, y: 184, name: "Gutis007" },
     { x: 113, y: 162, name: "Cubano" },
     { x: 116, y: 179, name: "Zelele" },
-    { x: 119, y: 157, name: "CadÃ£O" },
+    { x: 117, y: 117, name: "Nephalem" },
+    { x: 119, y: 157, name: "CadãO" },
     { x: 119, y: 196, name: "DrowRanged" },
     { x: 120, y: 42, name: "Carvox" },
     { x: 124, y: 174, name: "gugakai" },
@@ -126,15 +132,25 @@ function App() {
     { x: 136, y: 135, name: "ffffc" },
     { x: 143, y: 124, name: "Block182" },
     { x: 143, y: 164, name: "Slec" },
-    { x: 143, y: 169, name: "GuardaCagÃ£o" },
+    { x: 143, y: 169, name: "GuardaCagão" },
     { x: 143, y: 177, name: "ZeusBebum" },
+    { x: 143, y: 180, name: "Jean.Rodrigues" },
     { x: 144, y: 124, name: "Block182" },
+    { x: 144, y: 164, name: "Riskof" },
     { x: 146, y: 154, name: "Block182" },
     { x: 148, y: 153, name: "Nonakax" },
     { x: 149, y: 168, name: "Gura" },
+    { x: 150, y: 149, name: "Bolad0" },
     { x: 150, y: 160, name: "lipeta" },
     { x: 151, y: 176, name: "FelipeMGo" },
   ];
+
+  const setGuild = () => {
+    for (let el of dataGuild) {
+      const element = document.getElementsByClassName(`${el.x}-${el.y}`);
+      element[0].classList.add("guild");
+    }
+  };
 
   useEffect(() => {
     generateMap();
@@ -160,6 +176,7 @@ function App() {
     setTimeout(() => {
       setMap(columns);
       setSelectedCoordinates(emptyCoordiante);
+      setGuild();
     }, 100);
   };
 
@@ -228,10 +245,6 @@ function App() {
         element.classList.remove("top");
       }
     }
-    for (let el of dataGuild) {
-      const element = document.getElementsByClassName(`${el.x}-${el.y}`);
-      element[0].classList.remove("top");
-    }
 
     //Paint
     if (type === -1) {
@@ -249,15 +262,6 @@ function App() {
     }
 
     setInfo({ ...info, top100: type });
-  };
-
-  const setGuild = () => {
-    for (let el of dataGuild) {
-      const element = document.getElementsByClassName(`${el.x}-${el.y}`);
-      element[0].classList.add("top");
-    }
-
-    setInfo({ ...info, top100: 4 });
   };
 
   return (
@@ -373,28 +377,14 @@ function App() {
                   </Space>
                 </Row>
                 <Row className="row100 title" justify="center" align="middle">
+                  <div className="col guild"></div>
+                  &nbsp;Land EHiSTO
+                </Row>
+                <Row className="row100 title" justify="center" align="middle">
                   Top Reward Filter
                 </Row>
                 <Row
                   style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
-                  justify="center"
-                >
-                  <Tooltip placement="left" title="Guild" color="#f01f5a">
-                    <Button
-                      disabled={map.length === 0}
-                      style={{ width: 200 }}
-                      type="primary"
-                      className={
-                        info.top100 === 4 ? "button selected" : "button"
-                      }
-                      onClick={() => setGuild()}
-                    >
-                      Guild
-                    </Button>
-                  </Tooltip>
-                </Row>
-                <Row
-                  style={{ width: "100%", marginBottom: 10 }}
                   justify="center"
                 >
                   <Tooltip placement="left" title="Top 2000" color="#f01f5a">
@@ -559,13 +549,13 @@ function App() {
                       .map((f) => (
                         <>
                           <Row
-                            className="row100 title"
+                            className="row100 title gtext"
                             style={{ marginTop: 20 }}
                             justify="center"
                           >
                             Guild Member
                           </Row>
-                          <Row className="row100" justify="center">
+                          <Row className="row100 gtext" justify="center">
                             {f.name}
                           </Row>
                         </>
@@ -684,6 +674,10 @@ function App() {
               https://github.com/mrcustodio/eslandreward
             </Typography.Link>
           </Row>
+          <Row className="row100 title" style={{ marginTop: 20 }}>
+            Modify by
+          </Row>
+          <Row className="row100 text">[EHiSTO] poucatelha</Row>
         </Row>
       </Content>
     </Layout>

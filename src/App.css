@@ -89,11 +89,15 @@ html {
 }
 
 .selected {
-  background-color: #ffec3d;
+  background-color: #ffec3d !important;
 }
 
 .top {
   background-color: #ffec3d;
+}
+
+.guild {
+  background-color: #00FF00;
 }
 
 .row100 {
@@ -109,6 +113,10 @@ html {
 .row100.text {
   margin-top: 10px;
   font-size: 1rem;
+}
+
+.row100.gtext {
+  color: #00ff00;
 }
 
 .button.ant-btn-primary {
