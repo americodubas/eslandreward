@@ -21,7 +21,7 @@ import TownImage from "./assets/town_plot.png";
 import CityImage from "./assets/city_plot.png";
 import CapitalImage from "./assets/capital_plot.png";
 import ESLogo from "./assets/logo@2x.png";
-import SolarwoodImage from "./assets/go-icon_nationSolarwood.webp";
+import SolarwoodImage from "./assets/sigil_solarwood.png";
 
 const emptyCoordiante = { x: "", y: "" };
 
